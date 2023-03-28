@@ -23,11 +23,11 @@ export default function Home() {
         <meta name="description" content="A chanfundit demo" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="h-[100%]: flex flex-col items-center md:flex-row md:justify-between">
+      <main className="h-[100%]: flex flex-col gap-5 p-5 md:p-auto items-center md:flex-row md:justify-between">
         <div className="flex flex-col gap-5 max-w-[600px]">
           <p className="text-gray-500">Fundraising? Join The Chain Reaction!</p>
           <span>
-            <h1 className="font-bold text-[#7b7b7b] text-6xl">
+            <h1 className="font-bold text-[#7b7b7b] text-5xl md:text-6xl">
               ChainFund it for <br />
               {text}
               <Cursor />
@@ -40,7 +40,10 @@ export default function Home() {
           </Link>
         </div>
         <div>
-          <Image src={image} className="object-cover max-w-[600px] w-full" />
+          <Image
+            src={image}
+            className="object-cover max-w-[400px] mt-7 md:max-w-[600px] w-full"
+          />
         </div>
       </main>
     </>
