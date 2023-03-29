@@ -1,20 +1,12 @@
 [
   {
-    "id": "0e8vdd2f1",
-    "amount": 1000,
-    "currency": "NGN",
-    "name": "name",
-    "email": "email",
-    "date": "2023-03-29T20:20:35.536Z",
-    "paymentId": "12342"
-  },
-  {
-    "id": "4yqzsmx6j",
+    "id": "fktati72u",
     "amount": 100,
     "currency": "USD",
     "name": "name",
     "email": "email",
-    "date": "2023-03-29T20:22:12.319Z",
-    "paymentId": "12345"
+    "date": "2023-03-29T22:17:47.940Z",
+    "paymentId": "12345",
+    "isAnonymous": false
   }
 ]

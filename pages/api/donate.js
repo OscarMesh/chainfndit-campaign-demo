@@ -4,7 +4,7 @@ import path from "path";
 const donationsFilePath = path.join(process.cwd(), "donations.json");
 
 export default function handler(req, res) {
-  const { amount, currency, name, email, paymentId } = req.body;
+  const { amount, currency, name, email, paymentId, isAnonymous } = req.body;
 
   // Validate the input data
   if (!amount || !currency || !name || !email || !paymentId) {
@@ -20,6 +20,7 @@ export default function handler(req, res) {
     email: email,
     date: new Date().toISOString(),
     paymentId: paymentId,
+    isAnonymous: isAnonymous,
   };
 
   // Read the existing donations from the JSON file

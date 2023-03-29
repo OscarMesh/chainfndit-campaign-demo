@@ -39,7 +39,7 @@ const DonateForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(donationAmount, currency, name, email, phone, isAnonymous);
+    console.log({ donationAmount, currency, name, email, phone, isAnonymous });
   };
 
   return (
@@ -121,12 +121,21 @@ const DonateForm = () => {
               className="border rounded-md "
             />
           </div>
-          <button
-            type="submit"
-            className="bg-[#104901] text-white p-2 rounded-md"
-          >
-            Donate with paystack
-          </button>
+          {currency === "NGN" ? (
+            <button
+              type="submit"
+              className="bg-[#104901] text-white p-2 rounded-md"
+            >
+              Donate with paystack
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="bg-[#104901] text-white p-2 rounded-md"
+            >
+              Donate with stripe
+            </button>
+          )}
         </div>
       </form>
     </>
