@@ -12,8 +12,6 @@ export default function Home() {
       "Charities...",
       "Funeral Expenses...",
     ],
-    // loop: 3,
-    // onLoopDone: () => console.log(`loop completed after 3 runs.`),
   });
 
   return (
@@ -33,7 +31,7 @@ export default function Home() {
               <Cursor />
             </h1>
           </span>
-          <Link href="/campaigns">
+          <Link href="/campaign">
             <button className="p-3 border border-[#104901] mt-7 text-[#104901] font-bold hover:bg-[#104901] hover:text-white">
               View Campaings
             </button>

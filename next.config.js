@@ -6,6 +6,7 @@ const nextConfig = {
       "localhost",
       "chainfundit.com",
       "chainfundit-campaign-demo.vercel.app",
+      "www.midsouthfcu.org",
     ],
   },
 };

@@ -19,7 +19,7 @@ const Navabar = () => {
 
         <ul className="flex flex-row gap-6">
           <li className="text-[16px] font-medium hover:text-[#104901]">
-            <Link href="/campaigns">Campaigns</Link>
+            <Link href="/campaign">Campaign</Link>
           </li>
           <li className="text-[16px] font-medium hover:text-[#104901]">
             <Link href="/">Home</Link>

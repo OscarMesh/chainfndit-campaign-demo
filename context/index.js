@@ -10,4 +10,5 @@ We understand that times are tough, but we believe that with your help, we can m
 
 We appreciate any support you can offer, whether it's a one-time donation or a recurring contribution. Your generosity can help change lives and create a brighter future for all.
 
-Thank you for considering supporting this cause. Together, we can make a difference.`;
+Thank you for considering supporting this cause. Together, we can make a difference.
+`;
