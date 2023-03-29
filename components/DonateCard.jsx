@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { calculateBarPercentage } from "../utils";
 
 const DonateCard = () => {
@@ -60,9 +61,11 @@ const DonateCard = () => {
         {/* donate button */}
         {/* view all */}
         <div className="flex flex-row justify-between">
-          <button className="p-3 border bg-[#ffc135] rounded-md font-bold  mt-5 hover:bg-[#FFF] border-[#104901] ">
-            Donate
-          </button>
+          <Link href="/campaign/donate">
+            <button className="p-3 border bg-[#ffc135] rounded-md font-bold  mt-5 hover:bg-[#FFF] border-[#104901] ">
+              Donate
+            </button>
+          </Link>
           <button className="p-3 border rounded-md font-bold hover:text-white mt-5 hover:bg-[#104901] border-[#104901]">
             View All
           </button>

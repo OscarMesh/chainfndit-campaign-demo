@@ -11,7 +11,7 @@ const index = () => {
   const toggleShowMore = () => setShowMore(!showMore);
   return (
     <div className="h-full p-5 md:p-auto mt-5">
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-col items-center mb-3 md:flex-row justify-between">
         {/* left */}
         <div>
           <h1 className="font-bold text-[22px]">
