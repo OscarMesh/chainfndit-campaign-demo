@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 
+const currencies = [
+  { label: "USD", value: "USD" },
+  { label: "EUR", value: "EUR" },
+  { label: "GBP", value: "GBP" },
+];
+
 const DonateForm = () => {
   const [donationAmount, setDonationAmount] = useState(0);
   const [currency, setCurrency] = useState("USD");
@@ -64,6 +70,8 @@ const DonateForm = () => {
             >
               <option value="USD">USD</option>
               <option value="NGN">NGN</option>
+              <option value="GBP">GBP</option>
+              <option value="EUR">EUR</option>
             </select>
           </div>
           <div className="flex flex-col gap-2">
@@ -117,7 +125,7 @@ const DonateForm = () => {
             type="submit"
             className="bg-[#104901] text-white p-2 rounded-md"
           >
-            Donate
+            Donate with paystack
           </button>
         </div>
       </form>

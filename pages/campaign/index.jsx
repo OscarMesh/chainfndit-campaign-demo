@@ -4,8 +4,12 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import DonateCard from "../../components/DonateCard";
+import axios from "axios";
+import { useRouter } from "next/router";
 
-const index = () => {
+const index = ({ donations }) => {
+  console.log(donations);
+  const router = useRouter();
   const [showMore, setShowMore] = useState(false);
   const excerpt = content.slice(0, 300);
   const toggleShowMore = () => setShowMore(!showMore);
@@ -54,4 +58,13 @@ const index = () => {
   );
 };
 
+export const getServerSideProps = async () => {
+  const res = await axios.get("http://localhost:3000/api/donations");
+  const donations = res.data;
+  return {
+    props: {
+      donations,
+    },
+  };
+};
 export default index;
