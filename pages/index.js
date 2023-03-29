@@ -33,7 +33,7 @@ export default function Home() {
           </span>
           <Link href="/campaign">
             <button className="p-3 border border-[#104901] mt-7 text-[#104901] font-bold hover:bg-[#104901] hover:text-white">
-              View Campaings
+              View Campaing
             </button>
           </Link>
         </div>
