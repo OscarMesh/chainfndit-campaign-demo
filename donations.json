@@ -1,42 +1,4 @@
 [
-  {
-    "id": "fktati72u",
-    "amount": 100,
-    "currency": "USD",
-    "name": "name",
-    "email": "email",
-    "date": "2023-03-29T22:17:47.940Z",
-    "paymentId": "12345",
-    "isAnonymous": false
-  },
-  {
-    "id": "jhbiw7ya8",
-    "amount": 1000,
-    "currency": "NGN",
-    "name": "Oscar Okereke",
-    "email": "okerekeifeanyi65@gmail.com",
-    "date": "2023-03-29T23:09:15.684Z",
-    "paymentId": "T069759405142603",
-    "isAnonymous": true
-  },
-  {
-    "id": "7l9mlu6bf",
-    "amount": 1000,
-    "currency": "NGN",
-    "name": "Oscar Okereke",
-    "email": "test@gmail.com",
-    "date": "2023-03-29T23:11:48.453Z",
-    "paymentId": "T173993814921282",
-    "isAnonymous": false
-  },
-  {
-    "id": "aqk3i58fv",
-    "amount": 100,
-    "currency": "NGN",
-    "name": "Oscar Okereke",
-    "email": "test@gmail.com",
-    "date": "2023-03-30T22:16:49.198Z",
-    "paymentId": "T000738873890837",
-    "isAnonymous": false
-  }
+
+
 ]
