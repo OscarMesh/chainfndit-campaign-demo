@@ -9,6 +9,9 @@ const nextConfig = {
       "www.midsouthfcu.org",
     ],
   },
+  experimental: {
+    forceSwcTransforms: true,
+  },
 };
 
 module.exports = nextConfig;
