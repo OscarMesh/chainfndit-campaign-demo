@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-const DonatorsModal = ({ donations, setOpen }) => {
+const DonatorsModal = ({ donations, setOpen, symbol }) => {
   return (
     <div
       className="flex flex-col h-full fixed top-0 left-0 w-full bg-gray-400 bg-opacity-[0.8]"
@@ -37,7 +37,10 @@ const DonatorsModal = ({ donations, setOpen }) => {
               </div>
               <div className="flex flex-row justify-between  ">
                 <p>Amount Donated</p>
-                <h3 className="font-bold text-[#104901]">₦{donation.amount}</h3>
+                <h3 className="font-bold text-[#104901]">
+                  {symbol}
+                  {donation.amount}
+                </h3>
               </div>
             </div>
           ))}

@@ -5,31 +5,85 @@ import { calculateBarPercentage } from "../utils";
 import DonatorsModal from "./DonatorsModal";
 
 const DonateCard = ({ donations }) => {
-  const [open, setOpen] = useState(false);
-  console.log(donations.donations);
-  const totalDonationsAmount = donations.donations.reduce((acc, donation) => {
-    return acc + donation.amount;
-  }, 0);
-
-  const totalDonators = donations.donations.length;
-
   const goal = 1000000;
-  const goalUSD = goal / 500;
-  const goalGBP = goal / 700;
-  const goalEUR = goal / 600;
+  const [open, setOpen] = useState(false);
+  const [currency, setCurrency] = useState("NGN");
+  const [symbol, setSymbol] = useState("₦");
+  const [filteredDonations, setFilteredDonations] = useState([]);
 
-  const toggleCurrency = (currency) => {
-    if (currency === "USD") {
-      return goalUSD;
+  // const totalDonationsAmount = donations.donations.reduce((acc, donation) => {
+  //   return acc + donation.amount;
+  // }, 0);
+
+  // const totalDonators = donations.donations.length;
+  const toggleCurrency = () => {
+    if (currency === "NGN") {
+      setCurrency("GBP");
+      setSymbol("£");
+      setFilteredDonations(
+        donations.donations.filter((donation) => donation.currency === "GBP")
+      );
     } else if (currency === "GBP") {
-      return goalGBP;
+      setCurrency("EUR");
+      setSymbol("€");
+      setFilteredDonations(
+        donations.donations.filter((donation) => donation.currency === "EUR")
+      );
     } else if (currency === "EUR") {
-      return goalEUR;
+      setCurrency("USD");
+      setSymbol("$");
+      setFilteredDonations(
+        donations.donations.filter((donation) => donation.currency === "USD")
+      );
     } else {
+      setCurrency("NGN");
+      setSymbol("₦");
+      setFilteredDonations(
+        donations.donations.filter((donation) => donation.currency === "NGN")
+      );
+    }
+  };
+  const convertToCurrency = (goal, currency) => {
+    if (currency === "NGN") {
       return goal;
+    } else if (currency === "GBP") {
+      return goal / 550;
+    } else if (currency === "EUR") {
+      return goal / 650;
+    } else {
+      return goal / 410;
     }
   };
 
+  const sumDonationsInCurrency = donations.donations.reduce(
+    (total, donation) => {
+      if (donation.currency === currency) {
+        return total + donation.amount;
+      } else if (donation.currency === "GBP") {
+        return total + donation.amount / 550;
+      } else if (donation.currency === "EUR") {
+        return total + donation.amount / 650;
+      } else {
+        return total + donation.amount / 410;
+      }
+    },
+    0
+  );
+
+  const goalInCurrency = convertToCurrency(goal, currency).toFixed(2);
+  const raisedInCurrency =
+    sumDonationsInCurrency === 0
+      ? "0 raised"
+      : sumDonationsInCurrency.toFixed(2);
+  const numDonationsInCurrency = donations.donations.filter(
+    (donation) => donation.currency === currency
+  ).length;
+
+  // const handleFilterDonations = () => {
+  //   setFilteredDonations(
+  //     donations.donations.filter((donation) => donation.currency === currency)
+  //   );
+  // };
   return (
     <div>
       <div className="p-5 flex flex-col gap-3 bg-[#f5f5f5] rounded-md shadow-md w-[400px]">
@@ -40,8 +94,8 @@ const DonateCard = ({ donations }) => {
                 className="absolute rounded-md h-full bg-[#104901]"
                 style={{
                   width: `${calculateBarPercentage(
-                    goal,
-                    totalDonationsAmount
+                    goalInCurrency,
+                    raisedInCurrency
                   )}%`,
                   maxWidth: "100%",
                 }}
@@ -51,25 +105,30 @@ const DonateCard = ({ donations }) => {
           <div className="flex flex-row justify-between items-center p-3">
             <div className="flex flex-col gap-1 items-center">
               <p className="text-gray-400">Goal</p>
-              <h3 className="font-medium text-[18px]">₦{goal}</h3>
+              <h3 className="font-medium text-[18px]">
+                {symbol}
+                {goalInCurrency}
+              </h3>
             </div>
             <hr className="w-[1px] h-[40px] bg-gray-400" />
             <div className="flex flex-col gap-1 items-center">
               <p className="text-gray-400">Donations</p>
-              <h3 className="font-medium text-[18px]">{totalDonators}</h3>
+              <h3 className="font-medium text-[18px]">
+                {numDonationsInCurrency}
+              </h3>
             </div>
             <hr className="w-[1px] h-[40px] bg-gray-400" />
             <div className="flex flex-col gap-1 items-center">
               <p className="text-gray-400">Raised</p>
               <h3 className="font-medium text-[18px]">
-                ₦{totalDonationsAmount}
+                {symbol} {raisedInCurrency}
               </h3>
             </div>
           </div>
         </div>
         {/* donators */}
 
-        {donations.donations.slice(0, 2).map((donation) => (
+        {filteredDonations.slice(0, 2).map((donation) => (
           <div
             className="rounded-md flex flex-col gap-2 p-3 shadow-md hover:shadow-lg bg-white"
             key={donation._id}
@@ -84,7 +143,10 @@ const DonateCard = ({ donations }) => {
             </div>
             <div className="flex flex-row justify-between  ">
               <p>Amount Donated</p>
-              <h3 className="font-bold text-[#104901]">₦{donation.amount}</h3>
+              <h3 className="font-bold text-[#104901]">
+                {symbol}
+                {donation.amount}
+              </h3>
             </div>
           </div>
         ))}
@@ -96,6 +158,14 @@ const DonateCard = ({ donations }) => {
               Donate
             </button>
           </Link>
+
+          <button
+            className="p-3 border rounded-md font-bold hover:text-white mt-5 hover:bg-[#104901] border-[#104901]"
+            onClick={toggleCurrency}
+          >
+            Change currency
+          </button>
+
           <button
             onClick={() => setOpen(true)}
             className="p-3 border rounded-md font-bold hover:text-white mt-5 hover:bg-[#104901] border-[#104901]"
@@ -105,7 +175,11 @@ const DonateCard = ({ donations }) => {
         </div>
       </div>
       {open && (
-        <DonatorsModal setOpen={setOpen} donations={donations.donations} />
+        <DonatorsModal
+          setOpen={setOpen}
+          donations={filteredDonations}
+          symbol={symbol}
+        />
       )}
     </div>
   );

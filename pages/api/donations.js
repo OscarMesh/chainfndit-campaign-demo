@@ -13,6 +13,13 @@ export default function handler(req, res) {
     return res.status(500).json({ error: "Server error" });
   }
 
+  const { currency } = req.query;
+  if (currency) {
+    existingDonations = existingDonations.filter(
+      (donation) => donation.currency === currency.toUpperCase()
+    );
+  }
+
   // Return the existing donations as the response
   res.status(200).json({ donations: existingDonations });
 }
