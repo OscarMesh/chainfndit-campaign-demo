@@ -1,12 +1,13 @@
+import axios from "axios";
 import React, { useState } from "react";
-
-const currencies = [
-  { label: "USD", value: "USD" },
-  { label: "EUR", value: "EUR" },
-  { label: "GBP", value: "GBP" },
-];
+import { useRouter } from "next/router";
+import { PaystackButton } from "react-paystack";
+import toast from "react-hot-toast";
 
 const DonateForm = () => {
+  const router = useRouter();
+  const publicKey = "pk_test_6f0af7b8797769a25e651a35d69fd6831bde223f";
+
   const [donationAmount, setDonationAmount] = useState(0);
   const [currency, setCurrency] = useState("USD");
   const [name, setName] = useState("");
@@ -39,9 +40,48 @@ const DonateForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({ donationAmount, currency, name, email, phone, isAnonymous });
   };
 
+  
+// paystack component props
+  const componentProps = {
+    email: email,
+    amount: donationAmount * 100,
+    metadata: {
+      name,
+      phone,
+      isAnonymous,
+    },
+    publicKey,
+    text: "Donate with Paystack",
+    onSuccess: (response) => {
+      const donation = {
+        amount: donationAmount,
+        currency,
+        name,
+        email,
+        phone,
+        isAnonymous,
+        paymentId: response.reference,
+      };
+      const postDonation = async () => {
+        const response = await axios.post("http://localhost:3000/api/donate", {
+          ...donation,
+        });
+        console.log(response);
+        return response;
+      };
+      try {
+        postDonation();
+        toast.success("Donation successful");
+        router.push("/campaign");
+      } catch (error) {
+        console.log(error);
+        toast.error("Donation failed");
+      }
+    },
+    onClose: () => console.log("closed"),
+  };
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -122,12 +162,10 @@ const DonateForm = () => {
             />
           </div>
           {currency === "NGN" ? (
-            <button
-              type="submit"
+            <PaystackButton
+              {...componentProps}
               className="bg-[#104901] text-white p-2 rounded-md"
-            >
-              Donate with paystack
-            </button>
+            />
           ) : (
             <button
               type="submit"
