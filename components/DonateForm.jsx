@@ -42,8 +42,7 @@ const DonateForm = () => {
     event.preventDefault();
   };
 
-  
-// paystack component props
+  // paystack component props
   const componentProps = {
     email: email,
     amount: donationAmount * 100,
@@ -65,7 +64,10 @@ const DonateForm = () => {
         paymentId: response.reference,
       };
       const postDonation = async () => {
-        const response = await axios.post("http://localhost:3000/api/donate", {
+        const url =
+          "http://localhost:3000/api/donations" ||
+          "https://chainfndit-campaign-demo.vercel.app/api/donations";
+        const response = await axios.post(url, {
           ...donation,
         });
         console.log(response);
