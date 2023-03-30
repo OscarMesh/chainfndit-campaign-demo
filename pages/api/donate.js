@@ -44,7 +44,7 @@ export default function handler(req, res) {
   }
 
     // Set the CORS header to allow all origins
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Origin", "https://chainfndit-campaign-demo.vercel.app/");
 
   // Return the new donation object as the response
   res.status(201).json({ donation: newDonation });
