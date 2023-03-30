@@ -9,40 +9,10 @@ const DonateCard = ({ donations }) => {
   const [open, setOpen] = useState(false);
   const [currency, setCurrency] = useState("NGN");
   const [symbol, setSymbol] = useState("₦");
-  const [filteredDonations, setFilteredDonations] = useState([]);
+  const [filteredDonations, setFilteredDonations] = useState(
+    donations.donations.filter((donation) => donation.currency === "NGN")
+  );
 
-  // const totalDonationsAmount = donations.donations.reduce((acc, donation) => {
-  //   return acc + donation.amount;
-  // }, 0);
-
-  // const totalDonators = donations.donations.length;
-  const toggleCurrency = () => {
-    if (currency === "NGN") {
-      setCurrency("GBP");
-      setSymbol("£");
-      setFilteredDonations(
-        donations.donations.filter((donation) => donation.currency === "GBP")
-      );
-    } else if (currency === "GBP") {
-      setCurrency("EUR");
-      setSymbol("€");
-      setFilteredDonations(
-        donations.donations.filter((donation) => donation.currency === "EUR")
-      );
-    } else if (currency === "EUR") {
-      setCurrency("USD");
-      setSymbol("$");
-      setFilteredDonations(
-        donations.donations.filter((donation) => donation.currency === "USD")
-      );
-    } else {
-      setCurrency("NGN");
-      setSymbol("₦");
-      setFilteredDonations(
-        donations.donations.filter((donation) => donation.currency === "NGN")
-      );
-    }
-  };
   const convertToCurrency = (goal, currency) => {
     if (currency === "NGN") {
       return goal;
@@ -55,35 +25,70 @@ const DonateCard = ({ donations }) => {
     }
   };
 
-  const sumDonationsInCurrency = donations.donations.reduce(
-    (total, donation) => {
+  // const sumDonationsInCurrency = donations.donations.reduce(
+  //   (total, donation) => {
+  //     if (donation.currency === currency) {
+  //       return total + donation.amount;
+  //     } else if (donation.currency === "GBP") {
+  //       return total + donation.amount / 550;
+  //     } else if (donation.currency === "EUR") {
+  //       return total + donation.amount / 650;
+  //     } else {
+  //       return total + donation.amount / 410;
+  //     }
+  //   },
+  //   0
+  // );
+
+  const raisedInCurrency = donations.donations
+    .reduce((total, donation) => {
       if (donation.currency === currency) {
         return total + donation.amount;
       } else if (donation.currency === "GBP") {
         return total + donation.amount / 550;
       } else if (donation.currency === "EUR") {
         return total + donation.amount / 650;
+      } else if (donation.currency === "USD") {
+        return total + donation.amount / 400;
       } else {
-        return total + donation.amount / 410;
+        return total;
       }
-    },
-    0
-  );
+    }, 0)
+    .toFixed(0);
 
   const goalInCurrency = convertToCurrency(goal, currency).toFixed(0);
-  const raisedInCurrency =
-    sumDonationsInCurrency === 0
-      ? "0 raised"
-      : sumDonationsInCurrency.toFixed(0);
+  // const raisedInCurrency =
+  //   sumDonationsInCurrency === 0
+  //     ? "0 raised"
+  //     : sumDonationsInCurrency.toFixed(0);
   const numDonationsInCurrency = donations.donations.filter(
     (donation) => donation.currency === currency
   ).length;
 
-  // const handleFilterDonations = () => {
-  //   setFilteredDonations(
-  //     donations.donations.filter((donation) => donation.currency === currency)
-  //   );
-  // };
+  const handleCurrencyChange = (event) => {
+    setCurrency(event.target.value);
+    if (event.target.value === "NGN") {
+      setSymbol("₦");
+      setFilteredDonations(
+        donations.donations.filter((donation) => donation.currency === "NGN")
+      );
+    } else if (event.target.value === "GBP") {
+      setSymbol("£");
+      setFilteredDonations(
+        donations.donations.filter((donation) => donation.currency === "GBP")
+      );
+    } else if (event.target.value === "EUR") {
+      setSymbol("€");
+      setFilteredDonations(
+        donations.donations.filter((donation) => donation.currency === "EUR")
+      );
+    } else {
+      setSymbol("$");
+      setFilteredDonations(
+        donations.donations.filter((donation) => donation.currency === "USD")
+      );
+    }
+  };
   return (
     <div>
       <div className="p-5 flex flex-col gap-3 bg-[#f5f5f5] rounded-md shadow-md w-[400px]">
@@ -159,12 +164,25 @@ const DonateCard = ({ donations }) => {
             </button>
           </Link>
 
-          <button
-            className="p-3 border rounded-md font-bold hover:text-white mt-5 hover:bg-[#104901] border-[#104901]"
-            onClick={toggleCurrency}
+          <select
+            value={currency}
+            name={symbol}
+            className="p-3 border rounded-md font-md hover:text-white mt-5 hover:bg-[#104901] border-[#104901] cursor-pointer"
+            onChange={handleCurrencyChange}
           >
-            Change currency
-          </button>
+            <option name="₦" value="NGN">
+              NGN
+            </option>
+            <option name="£" value="GBP">
+              GBP
+            </option>
+            <option name="€" value="EUR">
+              EUR
+            </option>
+            <option name="$" value="USD">
+              USD
+            </option>
+          </select>
 
           <button
             onClick={() => setOpen(true)}
