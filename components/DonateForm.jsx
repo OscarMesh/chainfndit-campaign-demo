@@ -64,7 +64,11 @@ const DonateForm = () => {
         paymentId: response.reference,
       };
       try {
-        const response = axios.post("/api/donate", { ...donation });
+        const response = axios.post(
+          "/api/donate" ||
+            "https://chainfndit-campaign-demo.vercel.app/api/donate",
+          { ...donation }
+        );
         console.log(response);
         router.push("/campaign");
       } catch (error) {
