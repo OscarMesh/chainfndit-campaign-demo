@@ -4,8 +4,6 @@ import { useRouter } from "next/router";
 import { PaystackButton } from "react-paystack";
 import toast from "react-hot-toast";
 
-
-
 const DonateForm = () => {
   const router = useRouter();
   const publicKey = "pk_test_6f0af7b8797769a25e651a35d69fd6831bde223f";
@@ -65,23 +63,12 @@ const DonateForm = () => {
         isAnonymous,
         paymentId: response.reference,
       };
-      const postDonation = async () => {
-        const url =
-          "http://localhost:3000/api/donations" ||
-          "https://chainfndit-campaign-demo.vercel.app/api/donations";
-        const response = await axios.post(url, {
-          ...donation,
-        });
-        console.log(response);
-        return response;
-      };
       try {
-        postDonation();
-        toast.success("Donation successful");
+        const response = axios.post("/api/donate", { ...donation });
+        console.log(response);
         router.push("/campaign");
       } catch (error) {
         console.log(error);
-        toast.error("Donation failed");
       }
     },
     onClose: () => console.log("closed"),
