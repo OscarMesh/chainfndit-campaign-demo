@@ -70,11 +70,11 @@ const DonateCard = ({ donations }) => {
     0
   );
 
-  const goalInCurrency = convertToCurrency(goal, currency).toFixed(2);
+  const goalInCurrency = convertToCurrency(goal, currency).toFixed(0);
   const raisedInCurrency =
     sumDonationsInCurrency === 0
       ? "0 raised"
-      : sumDonationsInCurrency.toFixed(2);
+      : sumDonationsInCurrency.toFixed(0);
   const numDonationsInCurrency = donations.donations.filter(
     (donation) => donation.currency === currency
   ).length;
@@ -114,7 +114,7 @@ const DonateCard = ({ donations }) => {
             <div className="flex flex-col gap-1 items-center">
               <p className="text-gray-400">Donations</p>
               <h3 className="font-medium text-[18px]">
-                {numDonationsInCurrency}
+                {numDonationsInCurrency} in {symbol}
               </h3>
             </div>
             <hr className="w-[1px] h-[40px] bg-gray-400" />
