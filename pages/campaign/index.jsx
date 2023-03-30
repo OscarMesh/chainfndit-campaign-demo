@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import { content } from "../../context";
 import Image from "next/image";
+import useSWR from "swr";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import DonateCard from "../../components/DonateCard";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-const index = ({ donations }) => {
+const fetcher = async (url) => {
+  const response = await axios.get(url);
+  return response.data;
+};
+const index = () => {
   const router = useRouter();
   const [showMore, setShowMore] = useState(false);
+
+  const { data: donations, error } = useSWR("/api/donations", fetcher);
+  if (error) return <div>Error loading donations</div>;
+  if (!donations) return <div>Loading donations...</div>;
+  console.log(donations.donations);
+
   const excerpt = content.slice(0, 300);
   const toggleShowMore = () => setShowMore(!showMore);
   return (
@@ -59,16 +70,16 @@ const index = ({ donations }) => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const url =
-    "http://localhost:3000/api/donations" ||
-    "https://chainfndit-campaign-demo.vercel.app/api/donations";
-  const res = await axios.get(url);
-  const donations = res.data;
-  return {
-    props: {
-      donations,
-    },
-  };
-};
+// export const getServerSideProps = async () => {
+//   const url =
+//     "http://localhost:3000/api/donations" ||
+//     "https://chainfndit-campaign-demo.vercel.app/api/donations";
+//   const res = await axios.get(url);
+//   const donations = res.data;
+//   return {
+//     props: {
+//       donations,
+//     },
+//   };
+// };
 export default index;
