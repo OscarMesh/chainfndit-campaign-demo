@@ -72,6 +72,7 @@ const DonateForm = () => {
         console.log(response);
         router.push("/campaign");
       } catch (error) {
+        alert("An error occured");
         console.log(error);
       }
     },

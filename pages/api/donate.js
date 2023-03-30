@@ -43,6 +43,9 @@ export default function handler(req, res) {
     return res.status(500).json({ error: "Server error" });
   }
 
+    // Set the CORS header to allow all origins
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
   // Return the new donation object as the response
   res.status(201).json({ donation: newDonation });
 }
