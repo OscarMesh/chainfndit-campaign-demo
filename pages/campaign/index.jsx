@@ -1,25 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { content } from "../../context";
 import Image from "next/image";
-import useSWR from "swr";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import DonateCard from "../../components/DonateCard";
-import axios from "axios";
 import { useRouter } from "next/router";
-
-const fetcher = async (url) => {
-  const response = await axios.get(url);
-  return response.data;
-};
+// import { donations } from "../../donations";
 const index = () => {
   const router = useRouter();
   const [showMore, setShowMore] = useState(false);
+  const [data, setData] = useState([]);
 
-  const { data: donations, error } = useSWR("/api/donations", fetcher);
-  if (error) return <div>Error loading donations</div>;
-  if (!donations) return <div>Loading donations...</div>;
-  console.log(donations.donations);
+  useEffect(() => {
+    const storedDonations = JSON.parse(localStorage.getItem("donations")) || [];
+    setData(storedDonations);
+    console.log(data);
+  }, []);
 
   const excerpt = content.slice(0, 300);
   const toggleShowMore = () => setShowMore(!showMore);
@@ -53,7 +49,7 @@ const index = () => {
           </div>
 
           <div className="">
-            <DonateCard donations={donations} />
+            <DonateCard donations={data} />
           </div>
         </div>
         <div className="max-w-[600px]">

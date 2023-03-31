@@ -9,9 +9,7 @@ const DonateCard = ({ donations }) => {
   const [open, setOpen] = useState(false);
   const [currency, setCurrency] = useState("NGN");
   const [symbol, setSymbol] = useState("₦");
-  const [filteredDonations, setFilteredDonations] = useState(
-    donations.donations.filter((donation) => donation.currency === "NGN")
-  );
+  const [filteredDonations, setFilteredDonations] = useState([]);
 
   const convertToCurrency = (goal, currency) => {
     if (currency === "NGN") {
@@ -25,25 +23,10 @@ const DonateCard = ({ donations }) => {
     }
   };
 
-  // const sumDonationsInCurrency = donations.donations.reduce(
-  //   (total, donation) => {
-  //     if (donation.currency === currency) {
-  //       return total + donation.amount;
-  //     } else if (donation.currency === "GBP") {
-  //       return total + donation.amount / 550;
-  //     } else if (donation.currency === "EUR") {
-  //       return total + donation.amount / 650;
-  //     } else {
-  //       return total + donation.amount / 410;
-  //     }
-  //   },
-  //   0
-  // );
-
-  const raisedInCurrency = donations.donations
+  const raisedInCurrency = donations
     .reduce((total, donation) => {
       if (donation.currency === currency) {
-        return total + donation.amount;
+        return total + donation.amount / 1;
       } else if (donation.currency === "GBP") {
         return total + donation.amount / 550;
       } else if (donation.currency === "EUR") {
@@ -57,11 +40,7 @@ const DonateCard = ({ donations }) => {
     .toFixed(0);
 
   const goalInCurrency = convertToCurrency(goal, currency).toFixed(0);
-  // const raisedInCurrency =
-  //   sumDonationsInCurrency === 0
-  //     ? "0 raised"
-  //     : sumDonationsInCurrency.toFixed(0);
-  const numDonationsInCurrency = donations.donations.filter(
+  const numDonationsInCurrency = donations.filter(
     (donation) => donation.currency === currency
   ).length;
 
@@ -70,22 +49,22 @@ const DonateCard = ({ donations }) => {
     if (event.target.value === "NGN") {
       setSymbol("₦");
       setFilteredDonations(
-        donations.donations.filter((donation) => donation.currency === "NGN")
+        donations.filter((donation) => donation.currency === "NGN")
       );
     } else if (event.target.value === "GBP") {
       setSymbol("£");
       setFilteredDonations(
-        donations.donations.filter((donation) => donation.currency === "GBP")
+        donations.filter((donation) => donation.currency === "GBP")
       );
     } else if (event.target.value === "EUR") {
       setSymbol("€");
       setFilteredDonations(
-        donations.donations.filter((donation) => donation.currency === "EUR")
+        donations.filter((donation) => donation.currency === "EUR")
       );
     } else {
       setSymbol("$");
       setFilteredDonations(
-        donations.donations.filter((donation) => donation.currency === "USD")
+        donations.filter((donation) => donation.currency === "USD")
       );
     }
   };

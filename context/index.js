@@ -1,3 +1,24 @@
+import { useState, useEffect } from "react";
+
+export default function useDonations() {
+  const [donations, setDonations] = useState([]);
+
+  useEffect(() => {
+    const savedDonations = JSON.parse(localStorage.getItem("donations"));
+    if (savedDonations) {
+      setDonations(savedDonations);
+    }
+  }, []);
+
+  const addDonation = (newDonation) => {
+    const updatedDonations = [...donations, newDonation];
+    localStorage.setItem("donations", JSON.stringify(updatedDonations));
+    setDonations(updatedDonations);
+  };
+
+  return [donations, addDonation];
+}
+
 export const content = `Welcome to our fundraising campaign to help support students like Ahmed and Peter pay their tuition fees at the University of Lagos (UNILAG).
 
 Ahmed and Peter are just two of the many bright young minds who are struggling to afford the education they deserve. They have worked hard to gain admission into UNILAG, but without your help, they may not be able to continue pursuing their dreams.

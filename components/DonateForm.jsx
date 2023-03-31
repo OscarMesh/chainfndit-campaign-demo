@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { PaystackButton } from "react-paystack";
-import toast from "react-hot-toast";
 
 const DonateForm = () => {
   const router = useRouter();
@@ -54,7 +53,7 @@ const DonateForm = () => {
     publicKey,
     text: "Donate with Paystack",
     onSuccess: (response) => {
-      const donation = {
+      const newDonation = {
         amount: donationAmount,
         currency,
         name,
@@ -64,11 +63,12 @@ const DonateForm = () => {
         paymentId: response.reference,
       };
       try {
-        const response = axios.post("/api/donate", { ...donation });
-        console.log(response);
+        const storedDonations =
+          JSON.parse(localStorage.getItem("donations")) || [];
+        const updatedDonations = [...storedDonations, newDonation];
+        localStorage.setItem("donations", JSON.stringify(updatedDonations));
         router.push("/campaign");
       } catch (error) {
-        alert("An error occured");
         console.log(error);
       }
     },
