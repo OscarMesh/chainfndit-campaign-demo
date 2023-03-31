@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import moment from "moment/moment";
 import { calculateBarPercentage } from "../utils";
@@ -68,6 +68,12 @@ const DonateCard = ({ donations }) => {
       );
     }
   };
+
+  useEffect(() => {
+    setFilteredDonations(
+      donations.filter((donation) => donation.currency === "NGN")
+    );
+  }, [donations]);
   return (
     <div>
       <div className="p-5 flex flex-col gap-3 bg-[#f5f5f5] rounded-md shadow-md w-[400px]">
