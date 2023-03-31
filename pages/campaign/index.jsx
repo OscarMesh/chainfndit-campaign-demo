@@ -70,16 +70,4 @@ const index = () => {
   );
 };
 
-// export const getServerSideProps = async () => {
-//   const url =
-//     "http://localhost:3000/api/donations" ||
-//     "https://chainfndit-campaign-demo.vercel.app/api/donations";
-//   const res = await axios.get(url);
-//   const donations = res.data;
-//   return {
-//     props: {
-//       donations,
-//     },
-//   };
-// };
 export default index;

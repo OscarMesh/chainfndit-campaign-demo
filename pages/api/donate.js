@@ -1,7 +1,4 @@
-import fs from "fs";
-import path from "path";
-
-const donationsFilePath = path.join(process.cwd(), "donations.json");
+import { donations } from "../../donations";
 
 export default function handler(req, res) {
   const { amount, currency, name, email, paymentId, isAnonymous } = req.body;
@@ -23,28 +20,8 @@ export default function handler(req, res) {
     isAnonymous: isAnonymous,
   };
 
-  // Read the existing donations from the JSON file
-  let existingDonations = [];
-  try {
-    existingDonations = JSON.parse(fs.readFileSync(donationsFilePath));
-  } catch (error) {
-    console.error("Error reading donations file:", error);
-    return res.status(500).json({ error: "Server error" });
-  }
-
   // Add the new donation to the existing donations array
-  existingDonations.push(newDonation);
-
-  // Write the updated donations array to the JSON file
-  try {
-    fs.writeFileSync(donationsFilePath, JSON.stringify(existingDonations));
-  } catch (error) {
-    console.error("Error writing donations file:", error);
-    return res.status(500).json({ error: "Server error" });
-  }
-
-    // Set the CORS header to allow all origins
-    res.setHeader("Access-Control-Allow-Origin", "https://chainfndit-campaign-demo.vercel.app/");
+  donations.push(newDonation);
 
   // Return the new donation object as the response
   res.status(201).json({ donation: newDonation });
