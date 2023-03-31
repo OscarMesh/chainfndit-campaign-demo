@@ -41,15 +41,19 @@ const DonateForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     checkout({
-      amount: donationAmount,
-      currency,
-      name,
-      email,
-      phone,
-      isAnonymous,
+      lineItems: [
+        {
+          amount: donationAmount,
+          currency,
+          name,
+          email,
+          phone,
+          isAnonymous,
+        },
+      ],
     }).then((response) => {
       console.log(response);
-    })
+    });
   };
 
   // paystack component props

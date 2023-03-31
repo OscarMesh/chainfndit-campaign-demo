@@ -14,10 +14,10 @@ export async function checkout({ lineItems }) {
 
   const stripe = await getStripe();
 
-//   await stripe.redirectToCheckout({
-//     mode: "payment",
-//     lineItems,
-//     successUrl: `${window.location.origin}/campaign`,
-//     cancelUrl: window.location.origin,
-//   });
+  await stripe.redirectToCheckout({
+    mode: "payment",
+    lineItems,
+    successUrl: `${window.location.origin}/campaign`,
+    cancelUrl: window.location.origin,
+  });
 }
