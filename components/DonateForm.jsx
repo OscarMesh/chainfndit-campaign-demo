@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { PaystackButton } from "react-paystack";
 import { checkout } from "../stripeCheckout";
+import { loadStripe } from "@stripe/stripe-js";
 
 const DonateForm = () => {
   const router = useRouter();
   const publicKey = "pk_test_6f0af7b8797769a25e651a35d69fd6831bde223f";
-
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  );
   const [donationAmount, setDonationAmount] = useState(0);
   const [currency, setCurrency] = useState("USD");
   const [name, setName] = useState("");
@@ -38,22 +41,34 @@ const DonateForm = () => {
     setIsAnonymous(event.target.checked);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    checkout({
-      lineItems: [
-        {
-          amount: donationAmount,
-          currency,
-          name,
-          email,
-          phone,
-          isAnonymous,
-        },
-      ],
-    }).then((response) => {
-      console.log(response);
-    });
+    const stripe = await stripePromise;
+    try {
+      const newDonation = {
+        amount: donationAmount,
+        currency,
+        name,
+        email,
+        phone,
+        isAnonymous,
+        paymentId: JSON.stringify(Math.floor(Math.random() * 1000000000)),
+      };
+      const storedDonations =
+        JSON.parse(localStorage.getItem("donations")) || [];
+      const updatedDonations = [...storedDonations, newDonation];
+      localStorage.setItem("donations", JSON.stringify(updatedDonations));
+      await stripe.redirectToCheckout({
+        lineItems: [{ price: "price_1MrSpyHYeCpblOWZHGV9OofP", quantity: 1 }],
+        mode: "payment",
+        successUrl: `${window.location.origin}/campaign`,
+        cancelUrl: `${window.location.origin}/campaign//donate`,
+        customerEmail: email,
+      });
+      onS
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // paystack component props
@@ -91,7 +106,7 @@ const DonateForm = () => {
   };
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-2">
             <label htmlFor="amount">Amount</label>
@@ -175,8 +190,7 @@ const DonateForm = () => {
             />
           ) : (
             <button
-              type="button"
-              onClick={handleSubmit}
+              type="submit"
               className="bg-[#104901] text-white p-2 rounded-md"
             >
               Donate with stripe
