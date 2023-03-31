@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { PaystackButton } from "react-paystack";
+import { checkout } from "../stripeCheckout";
 
 const DonateForm = () => {
   const router = useRouter();
@@ -39,6 +40,16 @@ const DonateForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    checkout({
+      amount: donationAmount,
+      currency,
+      name,
+      email,
+      phone,
+      isAnonymous,
+    }).then((response) => {
+      console.log(response);
+    })
   };
 
   // paystack component props
@@ -76,7 +87,7 @@ const DonateForm = () => {
   };
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-2">
             <label htmlFor="amount">Amount</label>
@@ -160,7 +171,8 @@ const DonateForm = () => {
             />
           ) : (
             <button
-              type="submit"
+              type="button"
+              onClick={handleSubmit}
               className="bg-[#104901] text-white p-2 rounded-md"
             >
               Donate with stripe
