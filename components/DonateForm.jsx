@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { PaystackButton } from "react-paystack";
-import { checkout } from "../stripeCheckout";
 import { loadStripe } from "@stripe/stripe-js";
 
 const DonateForm = () => {
@@ -41,34 +40,32 @@ const DonateForm = () => {
     setIsAnonymous(event.target.checked);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const stripe = await stripePromise;
-    try {
-      const newDonation = {
-        amount: donationAmount,
-        currency,
-        name,
-        email,
-        phone,
-        isAnonymous,
-        paymentId: JSON.stringify(Math.floor(Math.random() * 1000000000)),
-      };
-      const storedDonations =
-        JSON.parse(localStorage.getItem("donations")) || [];
-      const updatedDonations = [...storedDonations, newDonation];
-      localStorage.setItem("donations", JSON.stringify(updatedDonations));
-      await stripe.redirectToCheckout({
-        lineItems: [{ price: "price_1MrSpyHYeCpblOWZHGV9OofP", quantity: 1 }],
-        mode: "payment",
-        successUrl: `${window.location.origin}/campaign`,
-        cancelUrl: `${window.location.origin}/campaign//donate`,
-        customerEmail: email,
-      });
-      onS
-    } catch (error) {
-      console.log(error);
+  const handleSubmit = async () => {
+    if (!amount || !currency || !name || !phone) {
+      alert("Please fill in all fields");
+      return
     }
+    const newDonation = {
+      amount: donationAmount,
+      currency,
+      name,
+      email,
+      phone,
+      isAnonymous,
+      paymentId: JSON.stringify(Math.floor(Math.random() * 1000000000)),
+    };
+    const storedDonations =
+      JSON.parse(localStorage.getItem("donations")) || [];
+    const updatedDonations = [...storedDonations, newDonation];
+    localStorage.setItem("donations", JSON.stringify(updatedDonations));
+    const stripe = await stripePromise;
+    await stripe.redirectToCheckout({
+      lineItems: [{ price: "price_1MrSpyHYeCpblOWZHGV9OofP", quantity: 1 }],
+      mode: "payment",
+      successUrl: `${window.location.origin}/campaign`,
+      cancelUrl: `${window.location.origin}/campaign/donate`,
+      customerEmail: email,
+    })
   };
 
   // paystack component props
@@ -106,7 +103,7 @@ const DonateForm = () => {
   };
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-2">
             <label htmlFor="amount">Amount</label>
@@ -190,14 +187,15 @@ const DonateForm = () => {
             />
           ) : (
             <button
-              type="submit"
+              type="button"
+              onClick={handleSubmit}
               className="bg-[#104901] text-white p-2 rounded-md"
             >
               Donate with stripe
             </button>
           )}
         </div>
-      </form>
+      </>
     </>
   );
 };
